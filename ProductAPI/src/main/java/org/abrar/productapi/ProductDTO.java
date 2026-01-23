@@ -1,0 +1,19 @@
+package org.abrar.productapi;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductDTO {
+
+    private int productId;
+    private String productName;
+    private int tax;
+    private double sellingPrice;
+}

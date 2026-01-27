@@ -14,13 +14,19 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="orders")
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
+    @Column(name="order_date_time")
     private LocalDateTime orderDateAndTime=LocalDateTime.now();
+
+    @Column(name="total_amount")
     private double totalAmount;
+
     @OneToMany(mappedBy ="orders", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<OrderItem> orderItems=new ArrayList<>();
+    private List<OrderItem> orderItems;
 
 }

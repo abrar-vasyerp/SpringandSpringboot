@@ -11,16 +11,25 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockBatch {
+@Table(name="stock_master")
+public class StockMaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stockBatchId;
+
+    @Column(name="quantity")
     private double quantity;
+
+    @Column(name="expiry_date")
     private LocalDate expiryDate;
+
+    @Column(name="buying_price")
     private double buyingPrice;
+
+    @Column(name="batch_number")
     private String batchNumber;
 
     @ManyToOne
-    @JoinColumn(name = "varient_id")
-    private Varient varient;
+    @JoinColumn(name = "product_variants_id")
+    private ProductVariants productVariants;
 }

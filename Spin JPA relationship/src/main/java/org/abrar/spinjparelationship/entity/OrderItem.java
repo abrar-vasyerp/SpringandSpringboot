@@ -1,23 +1,25 @@
-package org.abrar.spinjparelationship;
+package org.abrar.spinjparelationship.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockBatch {
+public class OrderItem {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long stockBatchId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderItemId;
     private double quantity;
-    private LocalDate expiryDate;
-    private double price;
+    private double itemPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "varient_id")

@@ -1,11 +1,11 @@
-package org.abrar.spinjparelationship;
+package org.abrar.spinjparelationship.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,15 +14,16 @@ import java.util.List;
 @AllArgsConstructor
 public class Varient {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long varientId;
     private String colour;
     private String size;
+    private double sellingPrice;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "varient")
-    private List<StockBatch> stockBatches= Collections.emptyList();
+    @OneToMany(mappedBy = "varient",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<StockBatch> stockBatches= new ArrayList<>();
 }

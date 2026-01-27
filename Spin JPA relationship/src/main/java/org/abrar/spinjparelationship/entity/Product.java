@@ -1,4 +1,4 @@
-package org.abrar.spinjparelationship;
+package org.abrar.spinjparelationship.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String productName;
     private int tax;
@@ -24,7 +24,7 @@ public class Product {
     private LocalDateTime createdOn;
     private LocalDateTime modifiedOn;
 
-    @OneToMany(mappedBy = "product")
-    private List<Varient> varients= Collections.emptyList();
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Varient> varients= new ArrayList<>();
 
 }

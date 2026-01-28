@@ -16,6 +16,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productId;
 
     @Column(name="product_name")
@@ -28,7 +29,7 @@ public class Product {
     private double sellingPrice;
 
     @Column(name="is_deleted")
-    private boolean isDeleted;
+    private boolean isDeleted= false;
 
     @Column(name="created_on")
     private LocalDateTime createdOn;
@@ -37,6 +38,17 @@ public class Product {
     private LocalDateTime modifiedOn;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ProductVariants> productVariants;
+    private List<ProductVariant> productVariants;
+
+    @PrePersist
+    private void onCreate(){
+        createdOn=LocalDateTime.now();
+        modifiedOn=LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void onUpdate(){
+        modifiedOn=LocalDateTime.now();
+    }
 
 }

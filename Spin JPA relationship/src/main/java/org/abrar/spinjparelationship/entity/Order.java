@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,18 +14,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="orders")
-public class Orders {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long orderId;
 
     @Column(name="order_date_time")
-    private LocalDateTime orderDateAndTime=LocalDateTime.now();
+    private LocalDateTime orderDateAndTime;
 
     @Column(name="total_amount")
     private double totalAmount;
 
-    @OneToMany(mappedBy ="orders", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy ="order", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderItem> orderItems;
+
+    @PrePersist
+    private void onCreate(){
+        orderDateAndTime=LocalDateTime.now();
+    }
 
 }

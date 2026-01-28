@@ -5,18 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="product_variants")
-public class ProductVariants {
+@Table(name="product_variant")
+public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long varientId;
+    @Column(name = "variant_id")
+    private Long variantId;
 
     @Column(name="variant_name")
     private String variantName;
@@ -28,6 +28,6 @@ public class ProductVariants {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "productVariants",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "productVariant",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<StockMaster> stockMasters ;
 }

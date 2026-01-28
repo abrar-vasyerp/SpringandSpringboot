@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class StockMaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stock_batch_id")
     private Long stockBatchId;
 
     @Column(name="quantity")
@@ -30,6 +31,6 @@ public class StockMaster {
     private String batchNumber;
 
     @ManyToOne
-    @JoinColumn(name = "product_variants_id")
-    private ProductVariants productVariants;
+    @JoinColumn(name = "product_variant_id")
+    private ProductVariant productVariant;
 }

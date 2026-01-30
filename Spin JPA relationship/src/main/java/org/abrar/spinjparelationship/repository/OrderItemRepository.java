@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
 
-    @Query("SELECT p, SUM(oi.quantity) AS soldQuantity FROM OrderItem oi JOIN oi.productVariants v JOIN v.product p JOIN oi.orders o WHERE o.orderDateAndTime >= :dateAndTime GROUP BY p ORDER BY soldQuantity DESC")
+    @Query("SELECT p, SUM(oi.quantity) AS soldQuantity FROM OrderItem oi JOIN oi.productVariant v JOIN v.product p JOIN oi.order o WHERE o.orderDateAndTime >= :dateAndTime GROUP BY p ORDER BY soldQuantity DESC")
     List<Object[]> findTopSellingProducts(@Param("dateAndTime") LocalDateTime fromDateAndTime);
 }
 

@@ -11,11 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class SpinJpaRelationshipApplication {
 
-    public static void main(String[] args) {
-
-        ConfigurableApplicationContext context=SpringApplication.run(SpinJpaRelationshipApplication.class, args);
-        ProductService productService=context.getBean(ProductService.class);
-        productService.printTopSellingProductsLastNDays(7);
+    public static void main(String[] args) {SpringApplication.run(SpinJpaRelationshipApplication.class, args);
 
     }
 

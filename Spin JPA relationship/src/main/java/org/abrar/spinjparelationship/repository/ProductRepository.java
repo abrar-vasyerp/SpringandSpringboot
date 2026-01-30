@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
@@ -15,4 +18,10 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Transactional
     @Query("update Product p set p.isDeleted=true where p.productId=:id")
     int softDeleteProductByProductId(@Param("id") Long productId);
+
+    List<Product> findByIsDeletedFalse();
+    List<Product> findByProductNameContainingIgnoreCaseAndIsDeletedFalse(String name);
+    Optional<Product> findByProductIdAndIsDeletedFalse(Long productId);
+
+    Optional<Product> findByProductId(Long productId);
 }

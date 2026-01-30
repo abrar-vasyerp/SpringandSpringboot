@@ -1,5 +1,6 @@
 package org.abrar.spinjparelationship.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class ProductVariant {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnoreProperties("productVariants")
     private Product product;
 
     @OneToMany(mappedBy = "productVariant",cascade = CascadeType.ALL,orphanRemoval = true)

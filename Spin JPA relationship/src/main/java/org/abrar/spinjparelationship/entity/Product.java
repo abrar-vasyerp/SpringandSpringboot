@@ -1,17 +1,23 @@
 package org.abrar.spinjparelationship.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"productVariants","deleted"})
 @Table(name = "product")
 public class Product {
     @Id
@@ -29,7 +35,7 @@ public class Product {
     private double sellingPrice;
 
     @Column(name="is_deleted")
-    private boolean isDeleted= false;
+    private boolean isDeleted;
 
     @Column(name="created_on")
     private LocalDateTime createdOn;
@@ -44,6 +50,7 @@ public class Product {
     private void onCreate(){
         createdOn=LocalDateTime.now();
         modifiedOn=LocalDateTime.now();
+        isDeleted=false;
     }
 
     @PreUpdate

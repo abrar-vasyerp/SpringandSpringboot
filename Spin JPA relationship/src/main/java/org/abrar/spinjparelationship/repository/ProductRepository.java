@@ -20,8 +20,29 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     int softDeleteProductByProductId(@Param("id") Long productId);
 
     List<Product> findByIsDeletedFalse();
+
     List<Product> findByProductNameContainingIgnoreCaseAndIsDeletedFalse(String name);
+
     Optional<Product> findByProductIdAndIsDeletedFalse(Long productId);
 
     Optional<Product> findByProductId(Long productId);
+
+    @Query(value = """
+        SELECT *
+        FROM product p
+        WHERE p.is_deleted = false
+          AND (:name IS NULL OR LOWER(p.product_name) LIKE LOWER(CONCAT('%', :name, '%')))
+          AND (:minPrice IS NULL OR p.selling_price >= :minPrice)
+          AND (:maxPrice IS NULL OR p.selling_price <= :maxPrice)
+        ORDER BY p.product_name ASC
+        LIMIT :limit OFFSET :offset
+        """, nativeQuery = true)
+    List<Product> findAllWithFiltersSortedByName(
+            @Param("name") String name,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
 }

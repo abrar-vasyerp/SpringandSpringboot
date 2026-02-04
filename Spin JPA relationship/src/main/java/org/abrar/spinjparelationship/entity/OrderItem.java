@@ -1,5 +1,6 @@
 package org.abrar.spinjparelationship.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +25,12 @@ public class OrderItem {
     private double itemPrice;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "product_variant_id")
     private ProductVariant productVariant;
 }

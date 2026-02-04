@@ -1,61 +1,95 @@
 package org.abrar.spinjparelationship.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.abrar.spinjparelationship.dto.ApiResponse;
-import org.abrar.spinjparelationship.entity.Product;
-import org.abrar.spinjparelationship.service.ProductService;
+import org.abrar.spinjparelationship.dto.ProductRequestDto;
+import org.abrar.spinjparelationship.dto.ProductResponseDto;
+import org.abrar.spinjparelationship.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
+
     private final ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<Product>> createProduct(@RequestBody(required = false) Product product){
-        Product saved=productService.createProduct(product);
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<ProductResponseDto>> createProduct(
+            @Valid @RequestBody ProductRequestDto productDto) {
+
+        ProductResponseDto saved = productService.createProduct(productDto);
+
         return ResponseEntity.ok(
-                new ApiResponse<>(true,"Product Added",saved)
+                new ApiResponse<>(true, "Product Added", saved)
         );
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<Product>>> getAllProducts(){
-        List<Product> productList=productService.getAllActiveProducts();
+    @GetMapping("/getAll")
+    public ResponseEntity<ApiResponse<List<ProductResponseDto>>> getAllProducts() {
+
+        List<ProductResponseDto> productList =
+                productService.getAllActiveProducts();
+
         return ResponseEntity.ok(
-                new ApiResponse<>(true,"All Products",productList)
+                new ApiResponse<>(true, "All Products", productList)
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> getProductById(@PathVariable Long id){
-        Product product=productService.getActiveProductById(id);
+    public ResponseEntity<ApiResponse<ProductResponseDto>> getProductById(
+            @PathVariable Long id) {
+
+        ProductResponseDto product =
+                productService.getActiveProductById(id);
+
         return ResponseEntity.ok(
-                new ApiResponse<>(true,"Product found",product)
+                new ApiResponse<>(true, "Product found", product)
         );
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> updateProductById(@PathVariable Long id,@RequestBody(required = false) Product updateProduct){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDto>> updateProductById(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequestDto updateDto) {
 
-        Product product=productService.updateProduct(id,updateProduct);
+        ProductResponseDto product =
+                productService.updateProduct(id, updateDto);
+
         return ResponseEntity.ok(
-                new ApiResponse<>(true,"Updated successfully",product)
+                new ApiResponse<>(true, "Updated successfully", product)
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteProductById(@PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteProductById(
+            @PathVariable Long id) {
+
         productService.softDeleteProduct(id);
 
         return ResponseEntity.ok(
-                new ApiResponse(true,"Product Deleted Successfully",null)
+                new ApiResponse<>(true, "Product Deleted Successfully", null)
+        );
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<ApiResponse<List<ProductResponseDto>>> getAllProductsWithFilter(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "1") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        List<ProductResponseDto> products = productService.getProductsByFilter(
+                name, minPrice, maxPrice, pageNumber, pageSize
         );
 
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Filtered Products", products)
+        );
     }
 }

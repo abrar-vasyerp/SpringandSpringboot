@@ -46,6 +46,9 @@ public class Product {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductVariant> productVariants;
 
+    @Version
+    private Long version;
+
     @PrePersist
     private void onCreate(){
         createdOn=LocalDateTime.now();
